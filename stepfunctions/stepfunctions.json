@@ -1,0 +1,118 @@
+{
+  "Comment": "This is your state machine",
+  "StartAt": "stp1_loadJSONfromS3",
+  "States": {
+    "stp1_loadJSONfromS3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "Payload.$": "$",
+        "FunctionName": "arn:aws:lambda:ap-northeast-1:000000000000:function:stp1_loadJSONfromS3:$LATEST"
+      },
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "Lambda.ServiceException",
+            "Lambda.AWSLambdaException",
+            "Lambda.SdkClientException"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 6,
+          "BackoffRate": 2
+        }
+      ],
+      "Next": "Pass (Debug)"
+    },
+    "Pass (Debug)": {
+      "Type": "Pass",
+      "Next": "Pass (Filter)"
+    },
+    "Pass (Filter)": {
+      "Type": "Pass",
+      "InputPath": "$.Payload",
+      "Next": "Map"
+    },
+    "Map": {
+      "Type": "Map",
+      "End": true,
+      "Iterator": {
+        "StartAt": "stp2_createStack",
+        "States": {
+          "stp2_createStack": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "OutputPath": "$.Payload",
+            "Parameters": {
+              "Payload.$": "$",
+              "FunctionName": "arn:aws:lambda:ap-northeast-1:000000000000:function:stp2_createStack:$LATEST"
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.ServiceException",
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException"
+                ],
+                "IntervalSeconds": 2,
+                "MaxAttempts": 6,
+                "BackoffRate": 2
+              }
+            ],
+            "Next": "Wait"
+          },
+          "Wait": {
+            "Type": "Wait",
+            "Seconds": 5,
+            "Next": "stp3_checkStack"
+          },
+          "stp3_checkStack": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::lambda:invoke",
+            "Parameters": {
+              "Payload.$": "$",
+              "FunctionName": "arn:aws:lambda:ap-northeast-1:000000000000:function:stp3_checkStack:$LATEST"
+            },
+            "Retry": [
+              {
+                "ErrorEquals": [
+                  "Lambda.ServiceException",
+                  "Lambda.AWSLambdaException",
+                  "Lambda.SdkClientException"
+                ],
+                "IntervalSeconds": 2,
+                "MaxAttempts": 6,
+                "BackoffRate": 2
+              }
+            ],
+            "Next": "Choice",
+            "OutputPath": "$.Payload"
+          },
+          "Choice": {
+            "Type": "Choice",
+            "Choices": [
+              {
+                "Variable": "$.Status",
+                "StringEquals": "InProgress",
+                "Next": "Wait"
+              },
+              {
+                "Variable": "$.Status",
+                "StringEquals": "Complete",
+                "Next": "Success"
+              }
+            ],
+            "Default": "Fail"
+          },
+          "Fail": {
+            "Type": "Fail"
+          },
+          "Success": {
+            "Type": "Succeed"
+          }
+        }
+      },
+      "MaxConcurrency": 1,
+      "ItemsPath": "$.Stacks"
+    }
+  }
+}
