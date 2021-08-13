@@ -73,8 +73,7 @@ Stepfumctionsの各フローの処理概要
     - 確認結果は、`InProgress`,`Complete`,`Failed` の3通り
 - Choice
     - 入力として受け取ったJSONデータ(`InProgress`,`Complete`,`Failed`)を元に次に進む処理を決定する
-        - `InProgress`： waitに進む
-        - `Complete`： stp2_createStackに進む
-        - `Failed`： Failに進む
-
+        - `InProgress`： `wait`フローに進む
+        - `Complete`： `stp2_createStack`フローに進む
+        - `Failed`： `Fail`フローに進む
 
