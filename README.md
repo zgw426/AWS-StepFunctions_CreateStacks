@@ -49,7 +49,7 @@ StepFunctions実行前の準備
 
 ## Stepfunctionsの処理概要
 
-Stepfumctionsの各フローの処理概要
+Stepfunctionsの各フローの処理概要
 
 - stp1_loadJSONfromS3
     - S3バケットにあるJSONファイルをロードする
