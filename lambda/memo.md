@@ -28,6 +28,8 @@
 }
 ```
 
+S3バケットのディレクトリ構成
+
 - (S3バケット) tmp-i6xldhl0mm
     - (プレフィックス) test
         - (JSONファイル) sample_vpc.json
