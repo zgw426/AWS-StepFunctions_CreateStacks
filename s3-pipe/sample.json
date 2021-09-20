@@ -1,0 +1,8 @@
+{
+    "Stacks":
+    [
+        {"ExcecType": "cfn" ,"StackName": "test001-vpc","Code": "vpc.yml", "PJPrefix": "Project1","VPCCIDR": "10.11.0.0/16"},
+        {"ExcecType": "cfn" ,"StackName": "test001-subnet1","Code": "subnet-public.yml", "PJPrefix": "Project1","NetworkName": "Net001","PublicSubnetCIDR": "10.11.1.0/24", "AZName": "ap-northeast-1a"},
+        {"ExcecType": "cfn" ,"StackName": "test001-sg","Code": "sg.yml", "PJPrefix": "Project1","ServiceName": "ServiceA","SGNo": "001"}
+    ]
+}

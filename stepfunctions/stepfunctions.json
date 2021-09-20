@@ -36,8 +36,27 @@
       "Type": "Map",
       "End": true,
       "Iterator": {
-        "StartAt": "stp2_createStack",
+        "StartAt": "Pass(debug)",
         "States": {
+          "Pass(debug)": {
+            "Type": "Pass",
+            "Next": "Choice(SelectExecType)"
+          },
+          "Choice(SelectExecType)": {
+            "Type": "Choice",
+            "Choices": [
+              {
+                "Variable": "$.ExcecType",
+                "StringEquals": "cfn",
+                "Next": "stp2_createStack"
+              }
+            ],
+            "Default": "Pass(dummy)"
+          },
+          "Pass(dummy)": {
+            "Type": "Pass",
+            "End": true
+          },
           "stp2_createStack": {
             "Type": "Task",
             "Resource": "arn:aws:states:::lambda:invoke",

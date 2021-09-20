@@ -1,3 +1,4 @@
+
 import json
 import boto3
 
@@ -21,6 +22,8 @@ def lambda_handler(event, context):
             print("s3bucketName = {0}".format(event[param]))
         elif param == "s3prefix":
             print("s3prefix = {0}".format(event[param]))
+        elif param == "ExcecType":
+            print("ExcecType = {0}".format(event[param]))
         else:
             paramVal.append({"ParameterKey": param ,"ParameterValue": event[param]})
 
@@ -37,3 +40,4 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "StackName": stack_name
     }
+

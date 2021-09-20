@@ -1,0 +1,6 @@
+{
+    "Stacks":
+    [
+        {"ExcecType": "cfn" ,"StackName": "test001-vpc","Code": "vpc.yml", "PJPrefix": "Project1","VPCCIDR": "10.11.0.0/16"}
+    ]
+}
